@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Home {% endblock title %}
+
+{% block contents %}
+
+<h1>Personal information</h1>
+<p>{{ user.first_name }}</p>
+<p>{{ user.last_name }}</p>
+<p>{{ user.username}}</p>
+
+<div>
+    <a href="{% url 'logout' %}" class="header-link"> Log out </a> 
+</div>
+
+{% endblock contents %}    

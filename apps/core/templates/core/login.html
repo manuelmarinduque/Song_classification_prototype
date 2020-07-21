@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Login {% endblock title %}
+
+{% block contents %}
+
+<div> Login via:</div>
+<a href="{% url 'social:begin' 'spotify' %}"> Spotify </a>
+
+{% endblock contents %}
