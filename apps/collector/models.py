@@ -5,8 +5,8 @@ from django.db import models
 class Artist(models.Model):
     identifier = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=300)
-    popularity = models.PositiveIntegerField()
-    followers = models.SmallIntegerField()
+    popularity = models.SmallIntegerField()
+    followers = models.PositiveIntegerField()
 
     class Meta:
         verbose_name = "Artista"
@@ -19,7 +19,7 @@ class Artist(models.Model):
 class Album(models.Model):
     identifier = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=300)
-    popularity = models.PositiveIntegerField()
+    popularity = models.SmallIntegerField()
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
 
     class Meta:
@@ -33,7 +33,7 @@ class Album(models.Model):
 class Song(models.Model):
     name = models.CharField(max_length=300)
     identifier = models.CharField(max_length=50, unique=True)
-    popularity = models.PositiveIntegerField()
+    popularity = models.SmallIntegerField()
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     duration_ms = models.SmallIntegerField()
     energy = models.FloatField()
