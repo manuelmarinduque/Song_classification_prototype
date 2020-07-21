@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Search artist in Spotify by URI {% endblock title %}
+
+{% block contents %}
+
+<div>
+    {% if 'fail' in request.GET %}
+    <p><strong> URI typed is invalid </strong></p>
+    {% endif %}
+</div>
+
+<div>
+    <form action="{% url 'collector:search_artist_page' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="uri" placeholder="Ingrese URI del artista" required>
+        <input type="submit" value="Buscar">
+    </form>
+</div>
+
+
+{% endblock contents %}

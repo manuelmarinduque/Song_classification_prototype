@@ -4,8 +4,8 @@ from . import views
 
 # Create yours urls here.
 
-appname = 'collector'
+app_name = 'collector'
 
 urlpatterns = [
-
+    path('search_artist', views.search_artist, name='search_artist_page')
 ]
