@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'social_django',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,6 +64,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -119,3 +122,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Spotify settings
+# https://python-social-auth.readthedocs.io/en/latest/configuration/settings.html
+# https://python-social-auth.readthedocs.io/en/latest/configuration/django.html
+
+SOCIAL_AUTH_SPOTIFY_KEY = '55c64375790e42f298941e9bdd0dbbc0'
+SOCIAL_AUTH_SPOTIFY_SECRET = '47744189d3844da0a5f57aada4747d79'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.spotify.SpotifyOAuth2',
+)
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'core:home_page'
+LOGOUT_REDIRECT_URL = 'core:login_page'
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
