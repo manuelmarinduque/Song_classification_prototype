@@ -3,7 +3,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db.utils import IntegrityError
 
-from .models import Artist, Album, Song
 from .classes.collector import Collector
 from spotipy.exceptions import SpotifyException
 
@@ -19,7 +18,7 @@ def searchArtist(request):
 
 
 def addDatabase(request, artist_uri):
-    collector = Collector(artist_uri)
+    collector = Collector(artist_uri[15:])
     try:
         dict_artist_info = collector.connection.artist(artist_uri)
     except SpotifyException:
