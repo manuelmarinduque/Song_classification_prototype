@@ -62,11 +62,11 @@ class Collector():
     def __validationFindNotWords(self, element_name, type_of):
         var = False
         if type_of == 'song':
-            not_words = ('version', 'live', 'en vivo', 'mix',
-                         'remix', 'mtv', 'instrumental', 'versión', '(vivo)')
+            not_words = ('version', 'live', 'en vivo', 'mix', 'remix', 'mtv', '(vivo)',
+                         'instrumental', 'versión')
         else:
-            not_words = ('gira', 'tour', 'live', 'mtv', 'commentary',
-                         'en vivo', 'mix', 'plug', 'unplugged')
+            not_words = ('gira', 'tour', 'live', 'mtv', 'commentary', 'en vivo', 'mix',
+                         'plug', 'unplugged', 'concierto', 'concert')
         for word in not_words:
             if element_name.find(word) != -1:
                 var = True
