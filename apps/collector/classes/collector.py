@@ -33,7 +33,7 @@ class Collector():
     def __getArtistAlbumsInformation(self, artist_object):
         artist_albums_info = self.connection.artist_albums(
             self.artist_uri, 'album', 'CO')
-        artist_albums = artist_albums_info.get('items')
+        artist_albums = artist_albums_info.get('items')[::-1]
         for album in artist_albums:
             album_name = album.get('name').lower()
             if self.__validationFindNotWords(album_name, 'album'):
