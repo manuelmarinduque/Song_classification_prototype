@@ -5,8 +5,8 @@ from apps.collector.models import Artist, Album, Song
 
 class Collector():
 
-    def __init__(self, artist_uri):
-        self.artist_uri = artist_uri
+    def __init__(self, artist_id):
+        self.artist_id = artist_id
         self.connection = self.__getAccessSpotify()
 
     def __getAccessSpotify(self):
@@ -17,7 +17,7 @@ class Collector():
         return connection
 
     def getArtistInformation(self, dict_artist_info):
-        artist_info = {'identifier': dict_artist_info.get('id'),
+        artist_info = {'identifier': self.artist_id,
                        'name': dict_artist_info.get('name'),
                        'popularity': dict_artist_info.get('popularity'),
                        'followers': dict_artist_info.get('followers').get('total')}
@@ -32,7 +32,7 @@ class Collector():
 
     def __getArtistAlbumsInformation(self, artist_object):
         artist_albums_info = self.connection.artist_albums(
-            self.artist_uri, 'album', 'CO')
+            self.artist_id, 'album', 'CO')
         artist_albums = artist_albums_info.get('items')[::-1]
         for album in artist_albums:
             album_name = album.get('name').lower()
@@ -114,7 +114,7 @@ class Collector():
 
     def __validationSongNameArtist(self, song_object):
         in_database = Song.objects.filter(
-            name=song_object.name, album__artist__identifier=self.artist_uri).exists()
+            name=song_object.name, album__artist__identifier=self.artist_id).exists()
         return in_database
 
     def __getAudioFeatures(self, song_id, song_name, song_popularity, album_object):

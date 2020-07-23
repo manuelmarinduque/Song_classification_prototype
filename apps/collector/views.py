@@ -18,9 +18,10 @@ def searchArtist(request):
 
 
 def addDatabase(request, artist_uri):
-    collector = Collector(artist_uri[15:])
+    artist_id = artist_uri[15:]
+    collector = Collector(artist_id)
     try:
-        dict_artist_info = collector.connection.artist(artist_uri)
+        dict_artist_info = collector.connection.artist(artist_id)
     except SpotifyException:
         return HttpResponseRedirect(reverse('collector:search_artist_page') + '?fail')
     else:
