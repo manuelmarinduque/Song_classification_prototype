@@ -95,8 +95,6 @@ class Collector():
 
     def __validationAddDatabase(self, object_element):
         if isinstance(object_element, Song):
-            in_database = Song.objects.filter(
-                identifier=object_element.identifier).exists()
             in_database = self.__validationSongNameArtist(object_element)
         elif isinstance(object_element, Album):
             in_database = Album.objects.filter(
