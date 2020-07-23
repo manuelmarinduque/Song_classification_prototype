@@ -63,7 +63,7 @@ class Collector():
         var = False
         if type_of == 'song':
             not_words = ('version', 'live', 'en vivo', 'mix', 'remix', 'mtv', '(vivo)',
-                         'instrumental', 'versión')
+                         'instrumental', 'versión', 'dub')
         else:
             not_words = ('gira', 'tour', 'live', 'mtv', 'commentary', 'en vivo', 'mix',
                          'plug', 'unplugged', 'concierto', 'concert')
