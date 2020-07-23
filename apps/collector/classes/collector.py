@@ -41,15 +41,12 @@ class Collector():
             else:
                 album_id = album.get('id')
                 album_popularity = self.__getPopularity(album_id, 'album')
-                if album_popularity >= 47:
-                    album_info = {'name': album_name,
-                                  'identifier': album_id,
-                                  'artist': artist_object,
-                                  'popularity': album_popularity}
-                    album_object = Album(**album_info)
-                    yield album_object
-                else:
-                    continue
+                album_info = {'name': album_name,
+                              'identifier': album_id,
+                              'artist': artist_object,
+                              'popularity': album_popularity}
+                album_object = Album(**album_info)
+                yield album_object
 
     def __getPopularity(self, identifier, type_of):
         if type_of == 'song':
