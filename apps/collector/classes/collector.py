@@ -2,6 +2,7 @@ import spotipy
 from statistics import quantiles
 
 from apps.collector.models import Artist, Album, Song
+from django.db.utils import IntegrityError
 
 
 class Collector():
@@ -32,7 +33,7 @@ class Collector():
 
     def __getArtistAlbumsInformation(self, artist_object):
         artist_albums_info = self.connection.artist_albums(
-            self.artist_id, 'album', 'CO')
+            self.artist_id, 'album', 'CO', 50)
         artist_albums = artist_albums_info.get('items')[::-1]
         for album in artist_albums:
             album_name = album.get('name').lower()
@@ -49,8 +50,12 @@ class Collector():
                                   'artist': artist_object,
                                   'popularity': album_popularity}
                     album_object = Album(**album_info)
-                    album_object.save()
-                    yield album_object
+                    try:
+                        album_object.save()
+                    except IntegrityError:
+                        continue
+                    else:
+                        yield album_object
 
     def __getPopularity(self, identifier, type_of):
         if type_of == 'song':

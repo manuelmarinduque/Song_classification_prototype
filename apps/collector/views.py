@@ -5,7 +5,7 @@ from django.db.utils import IntegrityError
 
 from .classes.collector import Collector
 from spotipy.exceptions import SpotifyException
-from .models import Artist
+from .models import Artist, Song
 
 # Create your views here.
 
@@ -35,4 +35,9 @@ def addDatabase(request, artist_uri):
             artist_object = collector.getArtistObject(dict_artist_info)
             collector.getArtistAlbums(artist_object)
             popularity = collector.deteleLeastPopularSongs()
-            return render(request, 'collector/search_artist.html', {'popularity': popularity})
+            counter_artist_songs = Song.objects.filter(
+                album__artist__identifier=artist_id).count()
+            return render(request, 'collector/search_artist.html', {
+                'popularity': popularity,
+                'counter': counter_artist_songs,
+                })
