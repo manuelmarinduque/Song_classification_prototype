@@ -36,7 +36,8 @@ class Collector():
         artist_albums = artist_albums_info.get('items')[::-1]
         for album in artist_albums:
             album_name = album.get('name').lower()
-            included_words = self.__validationIncludedWords(album_name, 'album')
+            included_words = self.__validationIncludedWords(
+                album_name, 'album')
             if not included_words:
                 in_database = Album.objects.filter(name=album_name,
                                                    artist__identifier=self.artist_id).exists()
@@ -81,7 +82,8 @@ class Collector():
             in_database = Song.objects.filter(name=song_name,
                                               album__artist__identifier=self.artist_id).exists()
             if not in_database:
-                included_words = self.__validationIncludedWords(song_name, 'song')
+                included_words = self.__validationIncludedWords(
+                    song_name, 'song')
                 if not included_words:
                     song_id = song.get('id')
                     song_popularity = self.__getPopularity(song_id, 'song')
