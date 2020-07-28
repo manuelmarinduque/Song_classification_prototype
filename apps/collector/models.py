@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Artist(models.Model):
     identifier = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=300)
@@ -11,10 +12,10 @@ class Artist(models.Model):
     class Meta:
         verbose_name = "Artista"
         verbose_name_plural = "Artistas"
-        ordering = ['name', 'popularity', 'followers']
 
     def __str__(self):
         return self.name
+
 
 class Album(models.Model):
     identifier = models.CharField(max_length=50, unique=True)
@@ -25,10 +26,10 @@ class Album(models.Model):
     class Meta:
         verbose_name = "Album"
         verbose_name_plural = "Albums"
-        ordering = ['name', 'popularity', 'artist']
 
     def __str__(self):
         return self.name
+
 
 class Song(models.Model):
     name = models.CharField(max_length=300)
@@ -53,7 +54,6 @@ class Song(models.Model):
     class Meta:
         verbose_name = "Cancion"
         verbose_name_plural = "Canciones"
-        ordering = ['name', 'popularity', 'album']
 
     def __str__(self):
         return self.name
