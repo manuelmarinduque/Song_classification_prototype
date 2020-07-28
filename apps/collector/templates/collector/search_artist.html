@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Search artist in Spotify by URI {% endblock title %}
+
+{% block contents %}
+
+<div>
+    {% if 'fail' in request.GET %}
+    <p style="color: red;"><strong> URI typed is invalid </strong></p>
+    {% endif %}
+</div>
+
+<div>
+    {% if 'exist' in request.GET %}
+    <p style="color: red;"><strong> Artist already was added </strong></p>
+    {% endif %}
+</div>
+
+{% if popularity %}
+<p style="color: green;"> Songs with popularity greater than {{popularity}} were added </p>
+{% endif %}
+
+<div>
+    <form action="{% url 'collector:search_artist_page' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="artist_uri" placeholder="Ingrese URI del artista" required>
+        <input type="submit" value="Buscar">
+    </form>
+</div>
+
+
+{% endblock contents %}
