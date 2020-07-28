@@ -6,9 +6,19 @@
 
 <div>
     {% if 'fail' in request.GET %}
-    <p><strong> URI typed is invalid </strong></p>
+    <p style="color: red;"><strong> URI typed is invalid </strong></p>
     {% endif %}
 </div>
+
+<div>
+    {% if 'exist' in request.GET %}
+    <p style="color: red;"><strong> Artist already was added </strong></p>
+    {% endif %}
+</div>
+
+{% if popularity %}
+<p style="color: green;"> Songs with popularity greater than {{popularity}} were added </p>
+{% endif %}
 
 <div>
     <form action="{% url 'collector:search_artist_page' %}" method="post">

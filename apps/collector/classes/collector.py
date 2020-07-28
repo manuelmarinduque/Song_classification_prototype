@@ -1,4 +1,5 @@
 import spotipy
+from statistics import quantiles
 
 from apps.collector.models import Artist, Album, Song
 
@@ -16,18 +17,17 @@ class Collector():
         connection = spotipy.Spotify(auth=token)
         return connection
 
-    def getArtistInformation(self, dict_artist_info):
+    def getArtistObject(self, dict_artist_info):
         artist_info = {'identifier': self.artist_id,
                        'name': dict_artist_info.get('name'),
                        'popularity': dict_artist_info.get('popularity'),
                        'followers': dict_artist_info.get('followers').get('total')}
         artist_object = Artist(**artist_info)
-        self.__addDatabase(artist_object)
+        artist_object.save()
         return artist_object
 
     def getArtistAlbums(self, artist_object):
         for album_object in self.__getArtistAlbumsInformation(artist_object):
-            self.__addDatabase(album_object)
             self.__getAlbumSongs(album_object)
 
     def __getArtistAlbumsInformation(self, artist_object):
@@ -36,17 +36,20 @@ class Collector():
         artist_albums = artist_albums_info.get('items')[::-1]
         for album in artist_albums:
             album_name = album.get('name').lower()
-            if self.__validationFindNotWords(album_name, 'album'):
-                continue
-            else:
-                album_id = album.get('id')
-                album_popularity = self.__getPopularity(album_id, 'album')
-                album_info = {'name': album_name,
-                              'identifier': album_id,
-                              'artist': artist_object,
-                              'popularity': album_popularity}
-                album_object = Album(**album_info)
-                yield album_object
+            included_words = self.__validationIncludedWords(album_name, 'album')
+            if not included_words:
+                in_database = Album.objects.filter(name=album_name,
+                                                   artist__identifier=self.artist_id).exists()
+                if not in_database:
+                    album_id = album.get('id')
+                    album_popularity = self.__getPopularity(album_id, 'album')
+                    album_info = {'name': album_name,
+                                  'identifier': album_id,
+                                  'artist': artist_object,
+                                  'popularity': album_popularity}
+                    album_object = Album(**album_info)
+                    album_object.save()
+                    yield album_object
 
     def __getPopularity(self, identifier, type_of):
         if type_of == 'song':
@@ -56,61 +59,37 @@ class Collector():
         popularity = dict_info.get('popularity')
         return popularity
 
-    def __validationFindNotWords(self, element_name, type_of):
+    def __validationIncludedWords(self, element_name, type_of):
         var = False
         if type_of == 'song':
-            not_words = ('version', 'live', 'en vivo', 'mix', 'remix', 'mtv', '(vivo)',
-                         'instrumental', 'versión', 'dub')
+            avoid_words = ('version', 'live', 'en vivo', 'mix', 'remix', 'mtv', '(vivo)',
+                           'instrumental', 'versión', 'dub')
         else:
-            not_words = ('gira', 'tour', 'live', 'mtv', 'commentary', 'en vivo', 'mix',
-                         'plug', 'unplugged', 'concierto', 'concert')
-        for word in not_words:
+            avoid_words = ('gira', 'tour', 'live', 'mtv', 'commentary', 'en vivo', 'mix',
+                           'plug', 'unplugged', 'concierto', 'concert')
+        for word in avoid_words:
             if element_name.find(word) != -1:
                 var = True
         return var
 
     def __getAlbumSongs(self, album_object):
-        for song_element in self.__getAlbumSongsInformation(album_object):
-            self.__addDatabase(song_element)
-            # print(song_element.album.artist.name)
-
-    def __getAlbumSongsInformation(self, album_object):
-        album_songs_info = self.connection.album_tracks(
-            album_object.identifier, market='CO')
+        album_songs_info = self.connection.album_tracks(album_object.identifier,
+                                                        market='CO')
         album_songs = album_songs_info.get('items')
         for song in album_songs:
             song_name = song.get('name').lower()
-            if self.__validationFindNotWords(song_name, 'song'):
-                continue
-            else:
-                song_id = song.get('id')
-                song_popularity = self.__getPopularity(song_id, 'song')
-                song_info = self.__getAudioFeatures(
-                    song_id, song_name, song_popularity, album_object)
-                song_object = Song(**song_info)
-                yield song_object
-
-    def __validationAddDatabase(self, object_element):
-        if isinstance(object_element, Song):
-            in_database = self.__validationSongNameArtist(object_element)
-        elif isinstance(object_element, Album):
-            in_database = Album.objects.filter(
-                identifier=object_element.identifier).exists()
-        else:
-            in_database = Artist.objects.filter(
-                identifier=object_element.identifier).exists()
-        return in_database
-
-    def __addDatabase(self, object_element):
-        if self.__validationAddDatabase(object_element):
-            pass
-        else:
-            object_element.save()
-
-    def __validationSongNameArtist(self, song_object):
-        in_database = Song.objects.filter(
-            name=song_object.name, album__artist__identifier=self.artist_id).exists()
-        return in_database
+            in_database = Song.objects.filter(name=song_name,
+                                              album__artist__identifier=self.artist_id).exists()
+            if not in_database:
+                included_words = self.__validationIncludedWords(song_name, 'song')
+                if not included_words:
+                    song_id = song.get('id')
+                    song_popularity = self.__getPopularity(song_id, 'song')
+                    song_info = self.__getAudioFeatures(song_id, song_name,
+                                                        song_popularity, album_object)
+                    song_object = Song(**song_info)
+                    song_object.save()
+                    # print(song_object.album.artist.name)
 
     def __getAudioFeatures(self, song_id, song_name, song_popularity, album_object):
         dict_song_description = self.connection.audio_features(song_id)[0]
@@ -122,10 +101,24 @@ class Collector():
         return song_audio_features
 
     def __getSongAtributes(self, dict_song_description):
-        atributes_not_included = (
-            'type', 'uri', 'track_href', 'analysis_url', 'id')
+        atributes_not_included = ('type', 'uri', 'track_href',
+                                  'analysis_url', 'id')
         song_atributes = {}
         for key, value in dict_song_description.items():
             if key not in atributes_not_included:
                 song_atributes[key] = value
         return song_atributes
+
+    def deteleLeastPopularSongs(self):
+        artist_songs = Song.objects.filter(
+            album__artist__identifier=self.artist_id)
+        songs_popularity = (song.popularity for song in artist_songs)
+        popularity = self.__getFirstQuantil(songs_popularity)
+        Song.objects.filter(
+            album__artist__identifier=self.artist_id, popularity__lte=popularity).delete()
+        return popularity
+
+    def __getFirstQuantil(self, songs_popularity):
+        nonduplicated = set(songs_popularity)
+        popularity = quantiles(nonduplicated, n=4)
+        return popularity[0]
