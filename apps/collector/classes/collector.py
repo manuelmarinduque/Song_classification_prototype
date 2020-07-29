@@ -71,7 +71,7 @@ class Collector():
             avoid_words = ('version', 'live', 'en vivo', 'mix', 'remix', 'mtv', '(vivo)',
                            'instrumental', 'versión', 'dub')
         else:
-            avoid_words = ('gira', 'tour', 'live', 'mtv', 'commentary', 'en vivo', 'mix',
+            avoid_words = ('homenaje', 'parranda', 'gira', 'tour', 'live', 'mtv', 'commentary', 'en vivo', 'mix',
                            'plug', 'unplugged', 'concierto', 'concert')
         for word in avoid_words:
             if element_name.find(word) != -1:

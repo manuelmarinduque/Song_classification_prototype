@@ -24,6 +24,7 @@
     <form action="{% url 'collector:search_artist_page' %}" method="post">
         {% csrf_token %}
         <input type="text" name="artist_uri" placeholder="Ingrese URI del artista" required>
+        <input type="text" name="no_popularity" placeholder="¿Sin popularidad">
         <input type="submit" value="Buscar">
     </form>
 </div>
