@@ -32,13 +32,11 @@ class Collector():
             self.__getAlbumSongs(album_object)
 
     def __getArtistAlbumsInformation(self, artist_object):
-        artist_albums_info = self.connection.artist_albums(
-            self.artist_id, 'album', 'CO', 50)
+        artist_albums_info = self.connection.artist_albums(self.artist_id, 'album', 'CO', 50)
         artist_albums = artist_albums_info.get('items')[::-1]
         for album in artist_albums:
             album_name = album.get('name').lower()
-            included_words = self.__validationIncludedWords(
-                album_name, 'album')
+            included_words = self.__validationIncludedWords(album_name, 'album')
             if not included_words:
                 in_database = Album.objects.filter(name=album_name,
                                                    artist__identifier=self.artist_id).exists()
@@ -68,27 +66,27 @@ class Collector():
     def __validationIncludedWords(self, element_name, type_of):
         var = False
         if type_of == 'song':
-            avoid_words = ('version', 'live', 'en vivo', 'mix', 'remix', 'mtv', '(vivo)',
-                           'instrumental', 'versión', 'dub')
+            avoid_words = ('version', 'live', 'en vivo', 'mix', 'remix', 'mtv', '(vivo)', 'bonus',
+                           'instrumental', 'versión', 'dub', 'demo', 'intro', 'interludio',
+                           'edit', 'en directo', 'directo')
         else:
-            avoid_words = ('homenaje', 'parranda', 'gira', 'tour', 'live', 'mtv', 'commentary', 'en vivo', 'mix',
-                           'plug', 'unplugged', 'concierto', 'concert')
+            avoid_words = ('homenaje', 'parranda', 'gira', 'tour', 'live', 'mtv', 'commentary',
+                           'en vivo', 'mix', 'plug', 'unplugged', 'concierto', 'concert', 
+                           'primera fila', 'pistas', 'sinfónico', 'en directo')
         for word in avoid_words:
             if element_name.find(word) != -1:
                 var = True
         return var
 
     def __getAlbumSongs(self, album_object):
-        album_songs_info = self.connection.album_tracks(album_object.identifier,
-                                                        market='CO')
+        album_songs_info = self.connection.album_tracks(album_object.identifier, market='CO')
         album_songs = album_songs_info.get('items')
         for song in album_songs:
             song_name = song.get('name').lower()
             in_database = Song.objects.filter(name=song_name,
                                               album__artist__identifier=self.artist_id).exists()
             if not in_database:
-                included_words = self.__validationIncludedWords(
-                    song_name, 'song')
+                included_words = self.__validationIncludedWords(song_name, 'song')
                 if not included_words:
                     song_id = song.get('id')
                     song_popularity = self.__getPopularity(song_id, 'song')
@@ -115,17 +113,3 @@ class Collector():
             if key not in atributes_not_included:
                 song_atributes[key] = value
         return song_atributes
-
-    def deteleLeastPopularSongs(self):
-        artist_songs = Song.objects.filter(
-            album__artist__identifier=self.artist_id)
-        songs_popularity = (song.popularity for song in artist_songs)
-        popularity = self.__getFirstQuantil(songs_popularity)
-        Song.objects.filter(
-            album__artist__identifier=self.artist_id, popularity__lte=popularity).delete()
-        return popularity
-
-    def __getFirstQuantil(self, songs_popularity):
-        nonduplicated = set(songs_popularity)
-        popularity = quantiles(nonduplicated, n=4)
-        return popularity[0]

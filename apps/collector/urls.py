@@ -8,5 +8,5 @@ app_name = 'collector'
 
 urlpatterns = [
     path('search_artist', views.searchArtist, name='search_artist_page'),
-    path('search_artist/<str:artist_uri>/<str:no_popularity>/', views.addDatabase, name='add_database_page'),
+    path('search_artist/<str:artist_uri>/', views.addDatabase, name='add_database_page'),
 ]
