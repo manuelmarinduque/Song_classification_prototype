@@ -43,10 +43,12 @@ class Collector():
                 if not in_database:
                     album_id = album.get('id')
                     album_popularity = self.__getPopularity(album_id, 'album')
+                    album_year = album.get('release_date')[0:4]
                     album_info = {'name': album_name,
                                   'identifier': album_id,
                                   'artist': artist_object,
-                                  'popularity': album_popularity}
+                                  'popularity': album_popularity,
+                                  'year': album_year}
                     album_object = Album(**album_info)
                     try:
                         album_object.save()

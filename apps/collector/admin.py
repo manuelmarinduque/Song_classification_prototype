@@ -21,6 +21,7 @@ class SongAdmin(admin.ModelAdmin):
     search_fields = ('name', 'album', 'id')
     list_filter = ('album', )
 
+
 admin.site.register(models.Artist, ArtistAdmin)
 admin.site.register(models.Album, AlbumAdmin)
 admin.site.register(models.Song, SongAdmin)

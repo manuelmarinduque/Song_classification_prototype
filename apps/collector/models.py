@@ -22,6 +22,7 @@ class Album(models.Model):
     name = models.CharField(max_length=300)
     popularity = models.SmallIntegerField()
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    year = models.CharField(max_length=6)
 
     class Meta:
         verbose_name = "Album"
@@ -57,3 +58,4 @@ class Song(models.Model):
 
     def __str__(self):
         return self.name
+        
