@@ -68,11 +68,11 @@ class Collector():
     def __validationIncludedWords(self, element_name, type_of):
         var = False
         if type_of == 'song':
-            avoid_words = ('version', 'live', 'en vivo', 'mix', 'remix', 'mtv', '(vivo)', 'bonus',
-                           'instrumental', 'versión', 'dub', 'demo', 'intro', 'interludio',
-                           'edit', 'en directo', 'directo')
+            avoid_words = ('version', 'live', 'en vivo', 'mtv', '(vivo)', 'bonus',
+                           'instrumental', 'versión', 'dub', 'interludio',
+                           'edit', 'en directo', 'directo', 'commentary')
         else:
-            avoid_words = ('homenaje', 'parranda', 'gira', 'tour', 'live', 'mtv', 'commentary',
+            avoid_words = ('homenaje', 'parranda', 'parrandero', 'gira', 'tour', 'live', 'mtv', 'commentary',
                            'en vivo', 'mix', 'plug', 'unplugged', 'concierto', 'concert', 
                            'primera fila', 'pistas', 'sinfónico', 'en directo')
         for word in avoid_words:
@@ -95,7 +95,10 @@ class Collector():
                     song_info = self.__getAudioFeatures(song_id, song_name,
                                                         song_popularity, album_object)
                     song_object = Song(**song_info)
-                    song_object.save()
+                    try:
+                        song_object.save()
+                    except IntegrityError:
+                        continue
                     # print(song_object.album.artist.name)
 
     def __getAudioFeatures(self, song_id, song_name, song_popularity, album_object):
