@@ -32,17 +32,18 @@ class Collector():
             self.__getAlbumSongs(album_object)
 
     def __getArtistAlbumsInformation(self, artist_object):
-        artist_albums_info = self.connection.artist_albums(self.artist_id, 'album', 'CO', 50)
-        artist_albums = artist_albums_info.get('items')[::-1]
+        artist_albums_info1 = self.connection.artist_albums(self.artist_id, 'album', 'CO', 50)
+        artist_albums1 = artist_albums_info1.get('items')
+        artist_albums_info2 = self.connection.artist_albums(self.artist_id, 'album', 'CO', 50, 50)
+        artist_albums2= artist_albums_info2.get('items')
+        artist_albums = artist_albums1 + artist_albums2
         for album in artist_albums:
             album_name = album.get('name').lower()
             included_words = self.__validationIncludedWords(album_name, 'album')
             if not included_words:
-                in_database = Album.objects.filter(name=album_name,
-                                                   artist__identifier=self.artist_id).exists()
-                if not in_database:
-                    album_id = album.get('id')
-                    album_popularity = self.__getPopularity(album_id, 'album')
+                album_id = album.get('id')
+                album_popularity = self.__getPopularity(album_id, 'album')
+                if album_popularity >= 40:
                     album_year = album.get('release_date')[0:4]
                     album_info = {'name': album_name,
                                   'identifier': album_id,
