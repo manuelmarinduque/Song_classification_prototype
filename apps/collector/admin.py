@@ -13,11 +13,14 @@ class ArtistAdmin(admin.ModelAdmin):
 class AlbumAdmin(admin.ModelAdmin):
     ordering = ('name', 'popularity', 'artist')
     search_fields = ('name', 'artist', 'id')
+    list_filter = ('artist', )
 
 
 class SongAdmin(admin.ModelAdmin):
     ordering = ('name', 'album', 'popularity', 'energy', 'tempo', 'valence')
     search_fields = ('name', 'album', 'id')
+    list_filter = ('album', )
+
 
 admin.site.register(models.Artist, ArtistAdmin)
 admin.site.register(models.Album, AlbumAdmin)
