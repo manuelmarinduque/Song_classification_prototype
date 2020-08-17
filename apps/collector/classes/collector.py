@@ -43,7 +43,7 @@ class Collector():
             if not included_words:
                 album_id = album.get('id')
                 album_popularity = self.__getPopularity(album_id, 'album')
-                if album_popularity >= 40:
+                if album_popularity >= 0:
                     album_year = album.get('release_date')[0:4]
                     album_info = {'name': album_name,
                                   'identifier': album_id,
