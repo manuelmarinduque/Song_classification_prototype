@@ -34,7 +34,7 @@ class Collector():
     def __getArtistAlbumsInformation(self, artist_object):
         artist_albums_info1 = self.connection.artist_albums(self.artist_id, 'album', 'CO', 50)
         artist_albums1 = artist_albums_info1.get('items')
-        artist_albums_info2 = self.connection.artist_albums(self.artist_id, 'album', 'CO', 50, 50)
+        artist_albums_info2 = self.connection.artist_albums(self.artist_id, 'single', 'CO', 50)
         artist_albums2= artist_albums_info2.get('items')
         artist_albums = artist_albums1 + artist_albums2
         for album in artist_albums:
@@ -69,11 +69,11 @@ class Collector():
     def __validationIncludedWords(self, element_name, type_of):
         var = False
         if type_of == 'song':
-            avoid_words = ('live', 'en vivo', 'mtv', '(vivo)',
+            avoid_words = ('live', 'en vivo', 'mtv', '(vivo)', 'remix', 'version', 'versión',
                            'instrumental', 'interludio', 'en directo', 'commentary')
         else:
             avoid_words = ('homenaje', 'parranda', 'parrandero', 'gira', 'tour', 'live', 'mtv', 'commentary',
-                           'en vivo', 'mix', 'plug', 'unplugged', 'concierto', 'concert', 
+                           'en vivo', 'mix', 'plug', 'unplugged', 'concierto', 'concert', 'track by track',
                            'primera fila', 'pistas', 'sinfónico', 'en directo')
         for word in avoid_words:
             if element_name.find(word) != -1:
