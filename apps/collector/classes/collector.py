@@ -69,11 +69,12 @@ class Collector():
     def __validationIncludedWords(self, element_name, type_of):
         var = False
         if type_of == 'song':
+            # Para los singles eliminar las palabras 'remix', 'version', 'versión'.
             avoid_words = ('live', 'en vivo', 'mtv', '(vivo)', 'remix', 'version', 'versión',
                            'instrumental', 'interludio', 'en directo', 'commentary')
         else:
-            avoid_words = ('homenaje', 'parranda', 'parrandero', 'gira', 'tour', 'live', 'mtv', 'commentary',
-                           'en vivo', 'mix', 'plug', 'unplugged', 'concierto', 'concert', 'track by track',
+            avoid_words = ('homenaje', 'gira', 'tour', 'live', 'mtv', 'commentary',
+                           'en vivo', 'plug', 'unplugged', 'concierto', 'concert', 'track by track',
                            'primera fila', 'pistas', 'sinfónico', 'en directo')
         for word in avoid_words:
             if element_name.find(word) != -1:
