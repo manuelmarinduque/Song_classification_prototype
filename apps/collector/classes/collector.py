@@ -70,12 +70,9 @@ class Collector():
         var = False
         if type_of == 'song':
             # Para los singles eliminar las palabras 'remix', 'version', 'versión'.
-            avoid_words = ('live', 'en vivo', 'mtv', '(vivo)',
-                           'instrumental', 'interludio', 'en directo', 'commentary')
+            avoid_words = ('- live', 'en vivo', '- vivo', 'en directo', '- directo')
         else:
-            avoid_words = ('homenaje', 'gira', 'tour', 'live', 'mtv', 'commentary',
-                           'en vivo', 'plug', 'unplugged', 'concierto', 'concert', 'track by track',
-                           'primera fila', 'pistas', 'sinfónico', 'en directo')
+            avoid_words = ('homenaje', 'live', 'mtv', 'commentary', 'en vivo', 'plug', 'unplugged', 'concierto', 'concert', 'track by track', 'primera fila', 'sinfónico', 'en directo')
         for word in avoid_words:
             if element_name.find(word) != -1:
                 var = True
