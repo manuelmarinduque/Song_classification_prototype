@@ -15,6 +15,11 @@ def searchArtist(request):
         artist_uri = request.POST.get('artist_uri')
         return HttpResponseRedirect(reverse('collector:add_database_page', args=(artist_uri, )))
     else:
+        songs_remastered = Song.objects.filter(name__contains = 'remast')
+        # for song in songs_remastered:
+        #     element = song.name.partition(' (')[0]
+        #     song.name = element
+        #     song.save()
         return render(request, 'collector/search_artist.html')
 
 
