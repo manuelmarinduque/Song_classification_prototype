@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'Song_classification_prototype.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'Songs_db_2.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'Songs_nonduplicated_db.sqlite3'),
     }
 }
 
