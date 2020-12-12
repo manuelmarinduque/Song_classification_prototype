@@ -14,8 +14,7 @@ class Collector():
     def __getAccessSpotify(self):
         credentials = spotipy.SpotifyClientCredentials(
             '55c64375790e42f298941e9bdd0dbbc0', '47744189d3844da0a5f57aada4747d79')
-        token = credentials.get_access_token()
-        connection = spotipy.Spotify(auth=token)
+        connection = spotipy.Spotify(auth_manager=credentials)
         return connection
 
     def getArtistObject(self, dict_artist_info):
