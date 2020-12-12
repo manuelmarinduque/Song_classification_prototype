@@ -140,3 +140,9 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'core:home_page'
 LOGOUT_REDIRECT_URL = 'core:login_page'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+SOCIAL_AUTH_SPOTIFY_SCOPE = [
+    'playlist-modify-public',
+    'playlist-modify-private',
+    'user-library-read',
+]
