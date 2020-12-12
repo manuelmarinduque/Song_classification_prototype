@@ -6,6 +6,7 @@ from django.db.utils import IntegrityError
 from .classes.collector import Collector
 from spotipy.exceptions import SpotifyException
 from .models import Artist, Song
+from social_django.models import UserSocialAuth
 
 # Create your views here.
 
@@ -20,7 +21,8 @@ def searchArtist(request):
 
 def addDatabase(request, artist_uri):
     artist_id = artist_uri[15:]
-    collector = Collector(artist_id)
+    token = UserSocialAuth.objects.get(user=request.user.id).extra_data.get('access_token')
+    collector = Collector(artist_id, token, request.user)
     try:
         dict_artist_info = collector.connection.artist(artist_id)
     except SpotifyException:

@@ -7,14 +7,13 @@ from django.db.utils import IntegrityError
 
 class Collector():
 
-    def __init__(self, artist_id):
+    def __init__(self, artist_id, token, user):
         self.artist_id = artist_id
-        self.connection = self.__getAccessSpotify()
+        self.user = user
+        self.connection = self.__getAccessSpotify(token)
 
-    def __getAccessSpotify(self):
-        credentials = spotipy.SpotifyClientCredentials(
-            '55c64375790e42f298941e9bdd0dbbc0', '47744189d3844da0a5f57aada4747d79')
-        connection = spotipy.Spotify(auth_manager=credentials)
+    def __getAccessSpotify(self, token):
+        connection = spotipy.Spotify(auth=token)
         return connection
 
     def getArtistObject(self, dict_artist_info):
@@ -24,6 +23,8 @@ class Collector():
                        'followers': dict_artist_info.get('followers').get('total')}
         artist_object = Artist(**artist_info)
         artist_object.save()
+        self.__readSavedTracks()
+        self.__createPlaylist()
         return artist_object
 
     def getArtistAlbums(self, artist_object):
@@ -115,3 +116,12 @@ class Collector():
             if key not in atributes_not_included:
                 song_atributes[key] = value
         return song_atributes
+
+    def __readSavedTracks(self):
+        results = self.connection.current_user_saved_tracks()
+        for idx, item in enumerate(results['items']):
+            track = item['track']
+            print(idx, track['artists'][0]['name'], " – ", track['name'])
+
+    def __createPlaylist(self):
+        self.connection.user_playlist_create(self.user, 'Nueva playlist desde el back', public=False)
