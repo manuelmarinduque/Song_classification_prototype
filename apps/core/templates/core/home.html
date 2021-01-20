@@ -4,17 +4,18 @@
 
 {% block contents %}
 
-<h1>Personal information</h1>
-<p>{{ user.first_name }}</p>
-<p>{{ user.last_name }}</p>
-<p>{{ user.username}}</p>
-
 <div>
-    <a href="{% url 'logout' %}" class="header-link"> Log out </a> 
+    <p>Haga clic en el botón para generar con las canciones de su gusto, tomadas de su biblioteca de Spotify, una lista
+        de reproducción para cada estado de ánimo: feliz, relajado y triste. Luego puede elegir qué listas de
+        reproducción crear en su cuenta.</p>
 </div>
 
 <div>
-    <a href="{% url 'collector:search_artist_page' %}"> Search artist in Spotify by URI </a>
+    <a href="#"> Obtener mis canciones </a>
 </div>
 
-{% endblock contents %}    
+<div>
+    <a href="{% url 'logout' %}" class="header-link"> Log out </a>
+</div>
+
+{% endblock contents %}

@@ -4,7 +4,16 @@
 
 {% block contents %}
 
-<div> Login via:</div>
-<a href="{% url 'social:begin' 'spotify' %}"> Spotify </a>
+<div>
+    <h1>Bienvenido a Sentify</h1>
+</div>
+
+<div>
+    <p>Crea listas de reproducción personalizadas en tu cuenta de Spotify basadas en tu estado de ánimo.</p>
+</div>
+
+<div>
+    <a href="{% url 'social:begin' 'spotify' %}"> Ingresa con Spotify </a>
+</div>
 
 {% endblock contents %}
