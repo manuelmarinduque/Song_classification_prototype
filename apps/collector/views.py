@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db.utils import IntegrityError
 
-from .classes.collector import Collector
+from classes.collector import Collector
 from spotipy.exceptions import SpotifyException
 from .models import Artist, Song
 from social_django.models import UserSocialAuth

@@ -23,8 +23,6 @@ class Collector():
                        'followers': dict_artist_info.get('followers').get('total')}
         artist_object = Artist(**artist_info)
         artist_object.save()
-        self.__readSavedTracks()
-        self.__createPlaylist()
         return artist_object
 
     def getArtistAlbums(self, artist_object):
@@ -83,21 +81,18 @@ class Collector():
         album_songs = album_songs_info.get('items')
         for song in album_songs:
             song_name = song.get('name').lower()
-            in_database = Song.objects.filter(name=song_name,
-                                              album__artist__identifier=self.artist_id).exists()
+            in_database = Song.objects.filter(name=song_name, album__artist__identifier=self.artist_id).exists()
             if not in_database:
                 included_words = self.__validationIncludedWords(song_name, 'song')
                 if not included_words:
                     song_id = song.get('id')
                     song_popularity = self.__getPopularity(song_id, 'song')
-                    song_info = self.__getAudioFeatures(song_id, song_name,
-                                                        song_popularity, album_object)
+                    song_info = self.__getAudioFeatures(song_id, song_name, song_popularity, album_object)
                     song_object = Song(**song_info)
                     try:
                         song_object.save()
                     except IntegrityError:
                         continue
-                    # print(song_object.album.artist.name)
 
     def __getAudioFeatures(self, song_id, song_name, song_popularity, album_object):
         dict_song_description = self.connection.audio_features(song_id)[0]
@@ -109,19 +104,18 @@ class Collector():
         return song_audio_features
 
     def __getSongAtributes(self, dict_song_description):
-        atributes_not_included = ('type', 'uri', 'track_href',
-                                  'analysis_url', 'id')
+        atributes_not_included = ('type', 'uri', 'track_href', 'analysis_url', 'id')
         song_atributes = {}
         for key, value in dict_song_description.items():
             if key not in atributes_not_included:
                 song_atributes[key] = value
         return song_atributes
 
-    def __readSavedTracks(self):
+    def readSavedTracks(self):
         results = self.connection.current_user_saved_tracks()
         for idx, item in enumerate(results['items']):
             track = item['track']
             print(idx, track['artists'][0]['name'], " – ", track['name'])
 
-    def __createPlaylist(self):
+    def createPlaylist(self):
         self.connection.user_playlist_create(self.user, 'Nueva playlist desde el back', public=False)

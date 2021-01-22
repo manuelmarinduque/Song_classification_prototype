@@ -5,9 +5,7 @@
 {% block contents %}
 
 <div>
-    <p>Haga clic en el botón para generar con las canciones de su gusto, tomadas de su biblioteca de Spotify, una lista
-        de reproducción para cada estado de ánimo: feliz, relajado y triste. Luego puede elegir qué listas de
-        reproducción crear en su cuenta.</p>
+    <p>Haga clic en el botón para generar con las canciones de su gusto, tomadas de su biblioteca de Spotify, una lista de reproducción para cada estado de ánimo: feliz, relajado y triste. Luego puede elegir qué listas de reproducción crear en su cuenta.</p>
 </div>
 
 <div>
@@ -16,6 +14,10 @@
 
 <div>
     <a href="{% url 'logout' %}" class="header-link"> Log out </a>
+</div>
+
+<div>
+    <a href="{% url 'collector:search_artist_page' %}"> Search artist in Spotify by URI </a>
 </div>
 
 {% endblock contents %}
