@@ -1,5 +1,6 @@
 import spotipy
 from statistics import quantiles
+import pandas as pd
 
 from apps.collector.models import Artist, Album, Song
 from django.db.utils import IntegrityError
@@ -112,10 +113,55 @@ class Collector():
         return song_atributes
 
     def readSavedTracks(self):
-        results = self.connection.current_user_saved_tracks()
-        for idx, item in enumerate(results['items']):
+        n = 0
+        tracks = []
+        saved_tracks = []
+        while not tracks:
+            tracks = self.connection.current_user_saved_tracks(50, n)['items']
+            saved_tracks.extend(tracks)
+            n += 50
+        ids_list = self.__generateIdsList(saved_tracks)
+        audio_features_saved_tracks = self.__getAudioFeaturesSavedTracks(ids_list)
+        return self.__createDataFrame(saved_tracks, audio_features_saved_tracks)
+
+    def __generateIdsList(self, saved_tracks):
+        ids_list = [track['track']['id'] for track in saved_tracks]
+        return ids_list
+    
+    def __getAudioFeaturesSavedTracks(self, ids_list):
+        start, end = 0, 99
+        audio_features = []
+        ids_list_aux = []
+        while not ids_list_aux:
+            ids_list_aux = ids_list[start:end]
+            audio_features.extend(self.connection.audio_features(ids_list_aux))
+            start = end
+            end += 99
+        return audio_features
+
+    def __createDataFrame(self, saved_tracks, audio_features_saved_tracks):
+        saved_tracks_df = pd.DataFrame(columns=('song_name', 'artist_name', 'track_id', 'id', 'acousticness',
+        'danceability', 'duration_ms', 'energy', 'instrumentalness', 'liveness', 'loudness', 'speechiness',
+        'tempo', 'valence'))
+        for item, audio_feature in zip(saved_tracks, audio_features_saved_tracks):
             track = item['track']
-            print(idx, track['artists'][0]['name'], " – ", track['name'])
+            track_info = {'song_name': track['name'],
+                          'artist_name': track['artists'][0]['name'], 
+                          'track_id': track['id'],
+                          'id': audio_feature['id'],
+                          'acousticness': audio_feature['acousticness'],
+                          'danceability': audio_feature['danceability'],
+                          'duration_ms': audio_feature['duration_ms'],
+                          'energy': audio_feature['energy'],
+                          'instrumentalness': audio_feature['instrumentalness'],
+                          'liveness': audio_feature['liveness'],
+                          'loudness': audio_feature['loudness'],
+                          'speechiness': audio_feature['speechiness'],
+                          'tempo': audio_feature['tempo'],
+                          'valence': audio_feature['valence']
+                         }
+            saved_tracks_df = saved_tracks_df.append(track_info, ignore_index=True)
+        return saved_tracks_df
 
     def createPlaylist(self):
         self.connection.user_playlist_create(self.user, 'Nueva playlist desde el back', public=False)

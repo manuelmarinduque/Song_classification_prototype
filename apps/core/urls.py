@@ -9,4 +9,5 @@ app_name = 'core'
 urlpatterns = [
     path('', views.login, name='login_page'),
     path('home/', views.home, name='home_page'),
+    path('playlist/', views.generatePlaylist, name='playlist_page'),
 ]
