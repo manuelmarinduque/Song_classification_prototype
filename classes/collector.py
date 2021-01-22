@@ -1,9 +1,9 @@
 import spotipy
-from statistics import quantiles
 import pandas as pd
 
-from apps.collector.models import Artist, Album, Song
 from django.db.utils import IntegrityError
+from joblib import load
+from apps.collector.models import Artist, Album, Song
 
 
 class Collector():
@@ -140,18 +140,16 @@ class Collector():
         return audio_features
 
     def __createDataFrame(self, saved_tracks, audio_features_saved_tracks):
-        saved_tracks_df = pd.DataFrame(columns=('song_name', 'artist_name', 'track_id', 'id', 'acousticness',
-        'danceability', 'duration_ms', 'energy', 'instrumentalness', 'liveness', 'loudness', 'speechiness',
+        saved_tracks_df = pd.DataFrame(columns=('song_name', 'artist_name', 'track_id', 'acousticness',
+        'danceability', 'energy', 'instrumentalness', 'liveness', 'loudness', 'speechiness',
         'tempo', 'valence'))
         for item, audio_feature in zip(saved_tracks, audio_features_saved_tracks):
             track = item['track']
             track_info = {'song_name': track['name'],
                           'artist_name': track['artists'][0]['name'], 
                           'track_id': track['id'],
-                          'id': audio_feature['id'],
                           'acousticness': audio_feature['acousticness'],
                           'danceability': audio_feature['danceability'],
-                          'duration_ms': audio_feature['duration_ms'],
                           'energy': audio_feature['energy'],
                           'instrumentalness': audio_feature['instrumentalness'],
                           'liveness': audio_feature['liveness'],
@@ -162,6 +160,13 @@ class Collector():
                          }
             saved_tracks_df = saved_tracks_df.append(track_info, ignore_index=True)
         return saved_tracks_df
+    
+    def modelPredicts(self, data_frame):
+        df = data_frame.drop(['song_name', 'artist_name', 'track_id', 'liveness', 'speechiness'], axis=1)
+        model = load('classes/model.pkl')
+        y_pred = model.predict(df)
+        data_frame['emotion'] = y_pred
+        return data_frame
 
     def createPlaylist(self):
         self.connection.user_playlist_create(self.user, 'Nueva playlist desde el back', public=False)

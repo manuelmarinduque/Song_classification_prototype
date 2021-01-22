@@ -15,4 +15,6 @@ def generatePlaylist(request):
     token = UserSocialAuth.objects.get(user=request.user.id).extra_data.get('access_token')
     collector = Collector('null', token, request.user)
     data_frame = collector.readSavedTracks()
+    data_frame_pred = collector.modelPredicts(data_frame)
+    print(data_frame.head())
     return render(request, 'core/playlist.html')
