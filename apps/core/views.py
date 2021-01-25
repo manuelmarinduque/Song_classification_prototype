@@ -24,6 +24,9 @@ class GeneratePlaylistView(TemplateView):
         collector = Collector('null', token, request.user)
         data_frame = collector.readSavedTracks()
         data_frame_pred = collector.modelPredicts(data_frame)
-        print(data_frame.head())
+        data_frame_pred = data_frame_pred.drop(['track_id', 'acousticness', 'danceability', 'energy', 'instrumentalness', 'loudness', 'tempo', 'valence', 'liveness', 'speechiness'], axis=1)
+        self.extra_context = {'relax_songs': data_frame_pred[data_frame_pred.emotion == 0].values,
+                              'happy_songs': data_frame_pred[data_frame_pred.emotion == 1].values,
+                              'sad_songs': data_frame_pred[data_frame_pred.emotion == 2].values}
         # La ejecución del método debe continuar con normalidad.
         return super().get(request, *args, **kwargs)
