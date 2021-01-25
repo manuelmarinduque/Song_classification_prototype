@@ -1,13 +1,13 @@
 from django.urls import path
 
-from . import views
+from .views import LoginView, HomeView, GeneratePlaylistView
 
 # Create your ulrs here.
 
 app_name = 'core'
 
 urlpatterns = [
-    path('', views.login, name='login_page'),
-    path('home/', views.home, name='home_page'),
-    path('playlist/', views.generatePlaylist, name='playlist_page'),
+    path('', LoginView.as_view(), name='login_page'),
+    path('home/', HomeView.as_view(), name='home_page'),
+    path('playlist/', GeneratePlaylistView.as_view(), name='playlist_page'),
 ]
