@@ -6,35 +6,44 @@
     font-family: Lato;
 }
 
-.container {
+.start-div {
+    margin-bottom: 20px;
+}
+
+.start-div p {
+    font-size: 25px;
+}
+
+.outer-container {
     width: 100%;
-    max-width: 370px;
     background: #121212;
     border-radius: 5px;
     padding: 15px;
     box-shadow: 0px 1px 10px black;
 }
 
-.container h3 {
+.outer-container h3 {
     font-weight: 400px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     background: #121212;
     text-align: center;
 }
 
-.container a {
-    background: #121212;
+.outer-container a {
+    background: #1DB954;
+    color: black;
+    font-weight: bold;
 }
 
 .inner_container {
     overflow: auto;
-    padding: 15px;
+    margin-bottom: 15px;
     height: 300px;
     background: #121212;
 }
 
 .inner_container p {
-    font-size: 15px;
+    font-size: 17px;
     margin: 5px;
     padding: 5px;
     background: #121212;
@@ -42,6 +51,8 @@
 
 .inner_container p:hover {
     background: #1DB954;
+    color: black;
+    font-weight: bold;
 }
 
 .inner_container::-webkit-scrollbar{
