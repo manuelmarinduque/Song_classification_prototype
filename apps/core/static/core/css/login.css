@@ -1,0 +1,23 @@
+.login {
+    text-align: center;
+}
+
+.login a {
+    background: #1DB954;
+    color: black;
+    font-weight: bold;
+}
+
+.fab {
+    background: #1db954;
+    font-size: 25px;
+}
+
+.titulo {
+    padding-top: 150px;
+    margin-bottom: 80px;
+}
+
+.subtitulo {
+    margin-bottom: 50px;
+}
