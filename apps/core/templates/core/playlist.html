@@ -5,7 +5,37 @@
 {% block contents %}
 
 <div>
-    <p>Playlist generated</p>
+    <p>Aquí están las listas de reproducción, elige cuáles crear en tu cuenta:</p>
+</div>
+
+<div class="container">
+    <h3>Escucha esta selección cuando la Felicidad te atrape.</h3>
+    <div class="inner_container">
+        {% for song in happy_songs %}
+            <p>{{song.0}} - {{song.1}}</p>
+        {% endfor %}
+    </div>
+    <a href="#">Crear Playlist</a>
+</div>
+
+<div class="container">
+    <h3>Escucha esta selección para tus momentos de Relajación.</h3>
+    <div class="inner_container">
+        {% for song in relax_songs %}
+            <p>{{song.0}} - {{song.1}}</p>
+        {% endfor %}
+    </div>
+    <a href="#">Crear Playlist</a>
+</div>
+
+<div class="container">
+    <h3>Escucha esta selección cuando la Tristeza llegue a ti.</h3>
+    <div class="inner_container">
+        {% for song in sad_songs %}
+            <p>{{song.0}} - {{song.1}}</p>
+        {% endfor %}
+    </div>
+    <a href="#">Crear Playlist</a>
 </div>
 
 {% endblock contents %}
