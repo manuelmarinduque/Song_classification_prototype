@@ -1,6 +1,11 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block title %} Playlist {% endblock title %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static '/core/css/playlist.css' %}">
+{% endblock stylesheet %}
 
 {% block contents %}
 

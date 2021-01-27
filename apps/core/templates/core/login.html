@@ -1,19 +1,28 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block title %} Login {% endblock title %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/core/css/core.css' %}">
+{% endblock stylesheet %}
+
 {% block contents %}
 
-<div>
-    <h1>Bienvenido a Sentify</h1>
-</div>
+<div class="container">
 
-<div>
-    <p>Crea listas de reproducción personalizadas en tu cuenta de Spotify basadas en tu estado de ánimo.</p>
-</div>
+    <div class="row">
+        <h1>Bienvenido a Sentify</h1>
+    </div>
 
-<div>
-    <a href="{% url 'social:begin' 'spotify' %}"> Ingresa con Spotify </a>
+    <div class="row">
+        <p>Crea listas de reproducción personalizadas en tu cuenta de Spotify basadas en tu estado de ánimo.</p>
+    </div>
+
+    <div class="row">
+        <a href="{% url 'social:begin' 'spotify' %}" class="btn"> Ingresa con Spotify </a>
+    </div>
+
 </div>
 
 {% endblock contents %}
