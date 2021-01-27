@@ -8,14 +8,21 @@
     font-weight: bold;
 }
 
+.login img {
+    padding-top: 50px;
+    width: 200px;
+    display:block;
+    margin:auto;
+}
+
 .fab {
     background: #1db954;
     font-size: 25px;
 }
 
 .titulo {
-    padding-top: 150px;
-    margin-bottom: 80px;
+    padding-top: 30px;
+    margin-bottom: 50px;
 }
 
 .subtitulo {
