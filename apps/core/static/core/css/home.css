@@ -1,0 +1,19 @@
+.home {
+    text-align: center;
+}
+
+.subtitulo {
+    padding-top: 200px;
+    margin-bottom: 70px;
+}
+
+.home a {
+    background: #1DB954;
+    color: black;
+    font-weight: bold;
+}
+
+.fas {
+    background: #1db954;
+    font-size: 25px;
+}
