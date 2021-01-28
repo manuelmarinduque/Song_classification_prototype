@@ -114,13 +114,15 @@ class Collector():
 
     def readSavedTracks(self):
         n = 0
-        tracks = []
+        tracks = [1]
         saved_tracks = []
-        while not tracks:
+        while tracks:
             tracks = self.connection.current_user_saved_tracks(50, n)['items']
             saved_tracks.extend(tracks)
             n += 50
+        print(len(saved_tracks))
         ids_list = self.__generateIdsList(saved_tracks)
+        print(len(ids_list))
         audio_features_saved_tracks = self.__getAudioFeaturesSavedTracks(ids_list)
         return self.__createDataFrame(saved_tracks, audio_features_saved_tracks)
 
@@ -131,12 +133,13 @@ class Collector():
     def __getAudioFeaturesSavedTracks(self, ids_list):
         start, end = 0, 99
         audio_features = []
-        ids_list_aux = []
-        while not ids_list_aux:
+        ids_list_aux = [1]
+        while ids_list_aux:
             ids_list_aux = ids_list[start:end]
             audio_features.extend(self.connection.audio_features(ids_list_aux))
             start = end
             end += 99
+        print(len(audio_features))
         return audio_features
 
     def __createDataFrame(self, saved_tracks, audio_features_saved_tracks):
