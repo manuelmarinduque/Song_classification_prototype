@@ -113,6 +113,7 @@ class Collector():
         return song_atributes
 
     def readSavedTracks(self):
+        # TODO Reescribir de una forma recursiva la funcionalidad del ciclo while.
         n = 0
         tracks = [1]
         saved_tracks = []
@@ -131,6 +132,7 @@ class Collector():
         return ids_list
     
     def __getAudioFeaturesSavedTracks(self, ids_list):
+        # TODO Hacer la función de forma recursiva.
         start, end = 0, 99
         audio_features = []
         ids_list_aux = [1]
