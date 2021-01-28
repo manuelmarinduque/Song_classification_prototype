@@ -136,6 +136,8 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.spotify.SpotifyOAuth2',
 )
 
+# Se define LOGIN_URL para que LoginRequiredMixin sepa cuál es la url del login
+LOGIN_URL = 'core:login_page'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'core:home_page'
 LOGOUT_REDIRECT_URL = 'core:login_page'
 
