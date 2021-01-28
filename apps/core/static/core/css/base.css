@@ -5,3 +5,16 @@
     color: beige;
     font-family: Lato;
 }
+
+.navbar-brand img {
+    width: 60px;
+}
+
+#navbarDropdown, .dropdown-item {
+    color: beige;
+}
+
+.dropdown-item p {
+    margin-bottom: 0px;
+    border-radius: 5px;
+}
