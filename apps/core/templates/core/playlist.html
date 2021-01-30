@@ -10,6 +10,13 @@
 {% block contents %}
 
 <div class="container">
+
+    {% if confirmation %}
+        <div class="row">
+            <p class="pd-3 bg-success text-white">Se creó la lista reproducción seleccionada, revisa la aplicación de Spotify </p>
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="start-div">
             <p>Aquí están las listas de reproducción, elige cuáles crear en tu cuenta:</p>
@@ -25,7 +32,7 @@
                     {% endfor %}
                 </div>
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <a href="#" class="btn">Crear Playlist</a>
+                    <a href="{% url 'core:create_playlist_page' 1 %}" class="btn">Crear Playlist</a>
                 </div>
             </div>
         </div>
@@ -38,7 +45,7 @@
                     {% endfor %}
                 </div>
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <a href="#" class="btn">Crear Playlist</a>
+                    <a href="{% url 'core:create_playlist_page' 2 %}" class="btn">Crear Playlist</a>
                 </div>
             </div>
         </div>
@@ -51,7 +58,7 @@
                     {% endfor %}
                 </div>
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <a href="#" class="btn">Crear Playlist</a>
+                    <a href="{% url 'core:create_playlist_page' 3 %}" class="btn">Crear Playlist</a>
                 </div>
             </div>
         </div>
