@@ -46,7 +46,7 @@ class GeneratePlaylistView(LoginRequiredMixin, TemplateView):
     
 class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
     http_method_names = ['get']
-    url = reverse_lazy('core:playlist_page_confirmation', args=('ok',))
+    url = reverse_lazy('core:playlist_confirmation_page', args=('ok',))
 
     def get(self, request, *args, **kwargs):
         token = UserSocialAuth.objects.get(user=request.user.id).extra_data.get('access_token')
