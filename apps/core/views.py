@@ -9,16 +9,6 @@ import pandas as pd
 # Create your views here.
 
 
-# Variable global que almacena el dataframe con las canciones clasificadas por emociones, de esta
-# forma se evita almacenar en la BD las canciones de un usuario o generar un csv para luego leerlo
-# al crear la playlist en la cuenta del usuario.
-# El servidor no se puede reiniciar porque también reinicia a 'None' el valor de la variable global,
-# lo cual lo hace susceptible a fallos. Si se reinicia se deben generar las playlist nuevamente.
-# También sucede lo mismo que lo anterior si se refresca la página limpiando la caché, es decir,
-# si se refresca mediante ctrl+f5.
-# dataframe_global = None
-
-
 class LoginView(TemplateView):
     template_name = 'core/login.html'
     http_method_names = ['get']
@@ -38,6 +28,7 @@ class GeneratePlaylistView(LoginRequiredMixin, TemplateView):
         collector = Collector('null', token, request.user)
         data_frame = collector.readSavedTracks()
         data_frame_pred = collector.modelPredicts(data_frame)
+        # TODO ¿utilizar la sesión del usuario? Esto mediante el diccionario request.session. Leer sobre sessión en la documentación.
         data_frame_pred.to_csv('apps/core/data/data_frame_pred.csv', index=False)
         data_frame_pred = data_frame_pred.drop(['track_id', 'acousticness', 'danceability', 'energy', 'instrumentalness', 'loudness', 'tempo', 'valence', 'liveness', 'speechiness'], axis=1)
         self.extra_context = {'relax_songs': data_frame_pred[data_frame_pred.emotion == 0].values,
