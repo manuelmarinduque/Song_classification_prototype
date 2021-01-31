@@ -3,8 +3,9 @@ from classes.collector import Collector
 from social_django.models import UserSocialAuth
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.shortcuts import redirect
 
-import pandas as pd
+from pandas import read_csv
 
 # Create your views here.
 
@@ -12,6 +13,12 @@ import pandas as pd
 class LoginView(TemplateView):
     template_name = 'core/login.html'
     http_method_names = ['get']
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('core:home_page')
+        return super().dispatch(request, *args, **kwargs)
+    
     
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'core/home.html'
@@ -45,7 +52,7 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
         token = UserSocialAuth.objects.get(user=request.user.id).extra_data.get('access_token')
         collector = Collector('null', token, request.user)
         playlist_value = self.kwargs.get('playlist_value')
-        dataframe = pd.read_csv('apps/core/data/data_frame_pred.csv')
+        dataframe = read_csv('apps/core/data/data_frame_pred.csv')
         if playlist_value == '1':
             collector.createPlaylist('Momentos felices', dataframe[dataframe.emotion == 1].track_id.values)
             print(len(dataframe[dataframe.emotion == 1].track_id.values))
