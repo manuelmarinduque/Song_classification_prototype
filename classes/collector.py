@@ -121,9 +121,7 @@ class Collector():
             tracks = self.connection.current_user_saved_tracks(50, n)['items']
             saved_tracks.extend(tracks)
             n += 50
-        print(len(saved_tracks))
         ids_list = self.__generateIdsList(saved_tracks)
-        print(len(ids_list))
         audio_features_saved_tracks = self.__getAudioFeaturesSavedTracks(ids_list)
         return self.__createDataFrame(saved_tracks, audio_features_saved_tracks)
 
@@ -141,7 +139,6 @@ class Collector():
             audio_features.extend(self.connection.audio_features(ids_list_aux))
             start = end
             end += 99
-        print(len(audio_features))
         return audio_features
 
     def __createDataFrame(self, saved_tracks, audio_features_saved_tracks):
@@ -153,6 +150,7 @@ class Collector():
             track_info = {'song_name': track['name'],
                           'artist_name': track['artists'][0]['name'], 
                           'track_id': track['id'],
+                          'track_id_af': audio_feature['id'],
                           'acousticness': audio_feature['acousticness'],
                           'danceability': audio_feature['danceability'],
                           'energy': audio_feature['energy'],
@@ -167,7 +165,7 @@ class Collector():
         return saved_tracks_df
     
     def modelPredicts(self, data_frame):
-        df = data_frame.drop(['song_name', 'artist_name', 'track_id', 'liveness', 'speechiness'], axis=1)
+        df = data_frame.drop(['song_name', 'artist_name', 'track_id', 'track_id_af', 'liveness', 'speechiness'], axis=1)
         model = load('classes/model.pkl')
         y_pred = model.predict(df)
         data_frame['emotion'] = y_pred
