@@ -55,11 +55,8 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
         dataframe = read_csv('apps/core/data/data_frame_pred.csv')
         if playlist_value == '1':
             collector.createPlaylist('Momentos felices', dataframe[dataframe.emotion == 1].track_id.values)
-            print(len(dataframe[dataframe.emotion == 1].track_id.values))
         elif playlist_value == '2':
             collector.createPlaylist('Momentos de relajación', dataframe[dataframe.emotion == 0].track_id.values)
-            print(len(dataframe[dataframe.emotion == 0].track_id.values))
         elif playlist_value == '3':
             collector.createPlaylist('Momentos tristes', dataframe[dataframe.emotion == 2].track_id.values)
-            print(len(dataframe[dataframe.emotion == 2].track_id.values))
         return super().get(request, *args, **kwargs)
