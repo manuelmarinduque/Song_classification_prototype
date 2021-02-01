@@ -16,15 +16,3 @@
     width: 60px;
 }
 
-#navbarDropdown, .dropdown-item {
-    color: beige;
-}
-
-#navbarDropdown:hover {
-    color: blanchedalmond;
-}
-
-.dropdown-item p {
-    margin-bottom: 0px;
-    border-radius: 5px;
-}
