@@ -4,17 +4,19 @@
 {% block title %} Playlist {% endblock title %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static '/core/css/playlist.css' %}">
+<link rel="stylesheet" href="{% static '/core/css/playlist.css' %}">
 {% endblock stylesheet %}
 
 {% block contents %}
 
 <div class="container">
 
-    {% if confirmation %}
-        <div class="row">
-            <p class="p-2 confirmation bg-success text-white">Se creó en tu cuenta la lista de reproducción seleccionada, ingresa a la aplicación de Spotify para escucharla.</p>
-        </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <p class="p-2 confirmation bg-success text-white">{{ message }}</p>
+        {% endfor %}
+    </ul>
     {% endif %}
 
     <div class="row">
@@ -32,7 +34,8 @@
                     {% endfor %}
                 </div>
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <a href="{% url 'core:create_playlist_page' 1 %}" class="btn"><i class="far fa-play-circle"></i>Crear Playlist</a>
+                    <a href="{% url 'core:create_playlist_page' 1 %}" class="btn"><i
+                            class="far fa-play-circle"></i>Crear Playlist</a>
                 </div>
             </div>
         </div>
@@ -45,7 +48,8 @@
                     {% endfor %}
                 </div>
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <a href="{% url 'core:create_playlist_page' 2 %}" class="btn"><i class="far fa-play-circle"></i>Crear Playlist</a>
+                    <a href="{% url 'core:create_playlist_page' 2 %}" class="btn"><i
+                            class="far fa-play-circle"></i>Crear Playlist</a>
                 </div>
             </div>
         </div>
@@ -58,7 +62,8 @@
                     {% endfor %}
                 </div>
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <a href="{% url 'core:create_playlist_page' 3 %}" class="btn"><i class="far fa-play-circle"></i>Crear Playlist</a>
+                    <a href="{% url 'core:create_playlist_page' 3 %}" class="btn"><i
+                            class="far fa-play-circle"></i>Crear Playlist</a>
                 </div>
             </div>
         </div>

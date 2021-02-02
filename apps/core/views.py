@@ -53,17 +53,21 @@ class GeneratePlaylistView(LoginRequiredMixin, TemplateView):
     
 class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
     http_method_names = ['get']
-    url = reverse_lazy('core:playlist_confirmation_page', args=('ok',))
+    url = reverse_lazy('core:playlist_page')
 
     def get(self, request, *args, **kwargs):
         token = UserSocialAuth.objects.get(user=request.user.id).extra_data.get('access_token')
         collector = Collector('null', token, request.user)
         playlist_value = self.kwargs.get('playlist_value')
         dataframe = read_csv('apps/core/data/data_frame_pred.csv')
-        if playlist_value == '1':
-            collector.createPlaylist('Momentos felices', dataframe[dataframe.emotion == 1].track_id.values)
-        elif playlist_value == '2':
-            collector.createPlaylist('Momentos de relajación', dataframe[dataframe.emotion == 0].track_id.values)
-        elif playlist_value == '3':
-            collector.createPlaylist('Momentos tristes', dataframe[dataframe.emotion == 2].track_id.values)
-        return super().get(request, *args, **kwargs)
+        try:
+            if playlist_value == '1':
+                collector.createPlaylist('Momentos felices', dataframe[dataframe.emotion == 1].track_id.values)
+            elif playlist_value == '2':
+                collector.createPlaylist('Momentos de relajación', dataframe[dataframe.emotion == 0].track_id.values)
+            elif playlist_value == '3':
+                collector.createPlaylist('Momentos tristes', dataframe[dataframe.emotion == 2].track_id.values)
+            messages.success(request, 'Se creó en tu cuenta la lista de reproducción seleccionada, ingresa a la aplicación de Spotify para escucharla.')
+            return super().get(request, *args, **kwargs)
+        except SpotifyException:
+            return redirect('login')
