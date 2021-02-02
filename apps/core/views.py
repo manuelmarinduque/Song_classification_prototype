@@ -1,11 +1,14 @@
 from django.views.generic import RedirectView, TemplateView
-from classes.collector import Collector
 from social_django.models import UserSocialAuth
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
+from django.contrib import messages
 
+from spotipy.exceptions import SpotifyException
+from classes.collector import Collector
 from pandas import read_csv
+
 
 # Create your views here.
 
@@ -33,8 +36,12 @@ class GeneratePlaylistView(LoginRequiredMixin, TemplateView):
         # Se sobrescribe este método para adaptar la clase TemplateView a una necesidad específica. 
         token = UserSocialAuth.objects.get(user=request.user.id).extra_data.get('access_token')
         collector = Collector('null', token, request.user)
-        data_frame = collector.readSavedTracks()
-        data_frame_pred = collector.modelPredicts(data_frame)
+        try:
+            data_frame = collector.readSavedTracks()
+            data_frame_pred = collector.modelPredicts(data_frame)
+        except SpotifyException:
+            messages.error(request, 'Su sesión ha expirado. Inicia sesión nuevamente.')
+            return redirect('logout')
         # TODO ¿utilizar la sesión del usuario? Esto mediante el diccionario request.session. Leer sobre sessión en la documentación.
         data_frame_pred.to_csv('apps/core/data/data_frame_pred.csv', index=False)
         data_frame_pred = data_frame_pred.drop(['track_id', 'acousticness', 'danceability', 'energy', 'instrumentalness', 'loudness', 'tempo', 'valence', 'liveness', 'speechiness'], axis=1)
