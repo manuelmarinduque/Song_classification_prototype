@@ -7,7 +7,7 @@ from django.contrib import messages
 
 from spotipy.exceptions import SpotifyException
 from classes.collector import Collector
-from pandas import read_csv
+from pandas import read_json
 
 
 # Create your views here.
@@ -42,8 +42,7 @@ class GeneratePlaylistView(LoginRequiredMixin, TemplateView):
         except SpotifyException:
             messages.error(request, 'Su sesión ha expirado. Inicia sesión nuevamente.')
             return redirect('logout')
-        # TODO ¿utilizar la sesión del usuario? Esto mediante el diccionario request.session. Leer sobre sessión en la documentación.
-        data_frame_pred.to_csv('apps/core/data/data_frame_pred.csv', index=False)
+        self.request.session['dataframe_json'] = data_frame_pred.to_json()
         data_frame_pred = data_frame_pred.drop(['track_id', 'acousticness', 'danceability', 'energy', 'instrumentalness', 'loudness', 'tempo', 'valence', 'liveness', 'speechiness'], axis=1)
         self.extra_context = {'relax_songs': data_frame_pred[data_frame_pred.emotion == 0].values,
                               'happy_songs': data_frame_pred[data_frame_pred.emotion == 1].values,
@@ -59,7 +58,7 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
         token = UserSocialAuth.objects.get(user=request.user.id).extra_data.get('access_token')
         collector = Collector('null', token, request.user)
         playlist_value = self.kwargs.get('playlist_value')
-        dataframe = read_csv('apps/core/data/data_frame_pred.csv')
+        dataframe = read_json(self.request.session['dataframe_json'])
         try:
             if playlist_value == '1':
                 collector.createPlaylist('Momentos felices', dataframe[dataframe.emotion == 1].track_id.values)
