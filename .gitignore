@@ -4,6 +4,14 @@
 ### Project ###
 data
 
+### vscode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
 ### Django ###
 *.log
 *.pot
@@ -11,7 +19,6 @@ data
 __pycache__/
 local_settings.py
 Songs_db.sqlite3-journal
-media
 migrations/
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
