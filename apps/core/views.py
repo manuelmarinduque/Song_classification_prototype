@@ -9,6 +9,8 @@ from spotipy.exceptions import SpotifyException
 from classes.collector import Collector
 from pandas import read_json
 
+from django.http import HttpResponse
+
 
 # Create your views here.
 
@@ -70,4 +72,4 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
             return super().get(self.request, *args, **kwargs)
         except SpotifyException:
             messages.error(self.request, 'Su sesión ha expirado. Inicia sesión nuevamente.')
-            return redirect('logout')
+            return HttpResponse({'token': token, 'id': self.request.user.id})
