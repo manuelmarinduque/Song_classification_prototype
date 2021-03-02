@@ -55,8 +55,8 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
     url = reverse_lazy('core:playlist_page')
 
     def get(self, request, *args, **kwargs):
-        token = UserSocialAuth.objects.get(user=request.user.id).extra_data.get('access_token')
-        collector = Collector('null', token, request.user)
+        token = UserSocialAuth.objects.get(user=self.request.user.id).extra_data.get('access_token')
+        collector = Collector('null', token, self.request.user)
         playlist_value = self.kwargs.get('playlist_value')
         dataframe = read_json(self.request.session['dataframe_json'])
         try:
@@ -69,4 +69,5 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
             messages.success(request, 'Se creó en tu cuenta la lista de reproducción seleccionada, ingresa a la aplicación de Spotify para escucharla.')
             return super().get(request, *args, **kwargs)
         except SpotifyException:
-            return redirect('login')
+            messages.error(request, 'Su sesión ha expirado. Inicia sesión nuevamente.')
+            return redirect('logout')
