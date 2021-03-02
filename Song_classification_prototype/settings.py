@@ -25,7 +25,7 @@ SECRET_KEY = 'af12p#y%g^4&lq))77sbyf33)1u_^n@v!s1ve)edgxm1%q-3i='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['songsclassification.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['songsclassificationapp.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Song_classification_prototype.urls'
