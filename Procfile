@@ -1,0 +1,1 @@
+web: gunicorn Song_classification_prototype.wsgi
