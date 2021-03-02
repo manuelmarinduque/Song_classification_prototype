@@ -50,7 +50,7 @@ class GeneratePlaylistView(LoginRequiredMixin, TemplateView):
         # La ejecución del método debe continuar con normalidad.
         return super().get(request, *args, **kwargs)
     
-class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
+class CreateSelectedPlaylist(RedirectView):
     http_method_names = ['get']
     url = reverse_lazy('core:playlist_page')
 
