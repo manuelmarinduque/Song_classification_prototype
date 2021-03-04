@@ -71,5 +71,5 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
             messages.success(self.request, 'Se creó en tu cuenta la lista de reproducción seleccionada, ingresa a la aplicación de Spotify para escucharla.')
             return super().get(self.request, *args, **kwargs)
         except SpotifyException:
-            messages.error(self.request, 'Su sesión ha expirado. Inicia sesión nuevamente.')
-            return HttpResponse(SpotifyException)
+            messages.error(self.request, f'Su sesión ha expirado. Inicia sesión nuevamente. Error: {SpotifyException}')
+            return redirect('logout')
