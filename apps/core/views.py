@@ -59,15 +59,15 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
         collector = Collector('null', token, request.user)
         playlist_value = self.kwargs.get('playlist_value')
         dataframe = read_json(self.request.session.get('dataframe_json'))
-        # try:
-        if playlist_value == '1':
-            collector.createPlaylist('Momentos felices', dataframe[dataframe.emotion == 1].track_id.values)
-        elif playlist_value == '2':
-            collector.createPlaylist('Momentos de relajación', dataframe[dataframe.emotion == 0].track_id.values)
-        elif playlist_value == '3':
-            collector.createPlaylist('Momentos tristes', dataframe[dataframe.emotion == 2].track_id.values)
-        messages.success(request, 'Se creó en tu cuenta la lista de reproducción seleccionada, ingresa a la aplicación de Spotify para escucharla.')
-        return super().get(request, *args, **kwargs)
-        #except SpotifyException as e:
-        #    messages.error(request, f'Su sesión ha expirado. Inicia sesión nuevamente. Exception = {e}. Data = {dataframe[dataframe.emotion == 1].track_id.values[0]}. Type = {type(dataframe[dataframe.emotion == 1].track_id.values[0])}')
-        #    return redirect('logout')
+        try:
+            if playlist_value == '1':
+                collector.createPlaylist('Momentos felices', dataframe[dataframe.emotion == 1].track_id.values)
+            elif playlist_value == '2':
+                collector.createPlaylist('Momentos de relajación', dataframe[dataframe.emotion == 0].track_id.values)
+            elif playlist_value == '3':
+                collector.createPlaylist('Momentos tristes', dataframe[dataframe.emotion == 2].track_id.values)
+            messages.success(request, 'Se creó en tu cuenta la lista de reproducción seleccionada, ingresa a la aplicación de Spotify para escucharla.')
+            return super().get(request, *args, **kwargs)
+        except SpotifyException as e:
+            messages.error(request, f'Su sesión ha expirado. Inicia sesión nuevamente. Exception = {e}. Data = {dataframe[dataframe.emotion == 1].track_id.values[0]}. Type = {type(dataframe[dataframe.emotion == 1].track_id.values[0])}')
+            return redirect('logout')
