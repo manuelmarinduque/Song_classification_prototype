@@ -172,15 +172,14 @@ class Collector():
         return data_frame
 
     def createPlaylist(self, selected_playlist, ids_list):
-        # TODO Hacer la función de forma recursiva, así se podría evitar las validaciones del
-        # while, del if y evitar el break.
-        new_playlist = self.connection.user_playlist_create(self.user, selected_playlist, False, "Tu lista de reproducción creada desde Sentify.")
+        # TODO Hacer la función de forma recursiva, así se podría evitar las validaciones del while, del if y evitar el break.
+        new_playlist = self.connection.user_playlist_create(self.user, selected_playlist, description="Tu lista de reproducción creada desde Sentify.")
         start, end = 0, 99
         ids_list_aux = [1]
         while True:
             ids_list_aux = ids_list[start:end]
             if len(ids_list_aux):
-                self.connection.user_playlist_add_tracks(self.user, new_playlist.get('id'), ['5mg6sU732O35VMfCYk3lmX', '7w87IxuO7BDcJ3YUqCyMTT'])
+                self.connection.user_playlist_add_tracks(self.user, new_playlist.get('id'), ids_list_aux)
                 start = end
                 end += 99
             else:
