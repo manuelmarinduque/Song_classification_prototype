@@ -68,6 +68,6 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
                 collector.createPlaylist('Momentos tristes', dataframe[dataframe.emotion == 2].track_id.values)
             messages.success(request, 'Se creó en tu cuenta la lista de reproducción seleccionada, ingresa a la aplicación de Spotify para escucharla.')
             return super().get(request, *args, **kwargs)
-        except SpotifyException:
-            messages.error(request, f'Su sesión ha expirado. Inicia sesión nuevamente. Data = {dataframe[dataframe.emotion == 1].track_id.values[0]}')
+        except SpotifyException as e:
+            messages.error(request, f'Su sesión ha expirado. Inicia sesión nuevamente. Exception = {e}. Data = {dataframe[dataframe.emotion == 1].track_id.values[0]}. Type = {type(dataframe[dataframe.emotion == 1].track_id.values[0])}')
             return redirect('logout')
