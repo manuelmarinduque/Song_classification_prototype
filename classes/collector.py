@@ -150,7 +150,7 @@ class Collector():
             track_info = {'song_name': track['name'],
                           'artist_name': track['artists'][0]['name'], 
                           'track_id': track['id'],
-                          'track_id_af': audio_feature['id'],
+                          'track_id_af': audio_feature['uri'],
                           'acousticness': audio_feature['acousticness'],
                           'danceability': audio_feature['danceability'],
                           'energy': audio_feature['energy'],
@@ -180,7 +180,7 @@ class Collector():
         while True:
             ids_list_aux = ids_list[start:end]
             if len(ids_list_aux):
-                self.connection.user_playlist_add_tracks(self.user, new_playlist.get('id'), ids_list_aux)
+                self.connection.user_playlist_add_tracks(self.user, new_playlist.get('id'), ['5mg6sU732O35VMfCYk3lmX', '7w87IxuO7BDcJ3YUqCyMTT'])
                 start = end
                 end += 99
             else:
