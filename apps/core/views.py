@@ -69,4 +69,5 @@ class CreateSelectedPlaylist(LoginRequiredMixin, RedirectView):
             messages.success(request, 'Se creó en tu cuenta la lista de reproducción seleccionada, ingresa a la aplicación de Spotify para escucharla.')
             return super().get(request, *args, **kwargs)
         except SpotifyException:
+            messages.error(request, f'Su sesión ha expirado. Inicia sesión nuevamente. Data = {dataframe[dataframe.emotion == 1].track_id.values[0]}')
             return redirect('logout')
