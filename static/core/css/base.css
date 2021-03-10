@@ -1,18 +1,96 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap");
 
 * {
-    background-color: #181818;
-    color: beige;
-    font-family: Lato;
+  background-color: #181818;
+  color: beige;
+  font-family: Lato;
 }
 
 .navbar-brand {
-    font-weight: bold;
-    font-size: 30px;
-    font-family: Lato;
+  font-weight: bold;
+  font-size: 30px;
+  font-family: Lato;
 }
 
 .navbar-brand img {
-    width: 60px;
+  width: 60px;
 }
 
+.textoSpinner {
+  margin-top: -80px !important;
+  z-index: 5;
+  font-size: x-large;
+  color: white;
+  font-weight: 700;
+}
+
+.procesar {
+  background-color: rgba(0, 0, 0, 0.671);
+  z-index: 5;
+  width: 100%;
+  height: 1000000vh;
+  position: fixed;
+}
+
+.spinner {
+  margin: 100px auto;
+  margin-top: 18%;
+  margin-left: 48%;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner > div {
+  background-color: rgb(255, 255, 255);
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+  }
+}
+
+@keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+  }
+}
