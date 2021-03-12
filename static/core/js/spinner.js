@@ -1,3 +1,5 @@
 function spinner(){
-    $(document.getElementById("PantallaCarga")).slideToggle();
+    const spinner = document.querySelector('.procesar')
+    spinner.classList.add('ShowContents')
+    spinner.classList.remove('procesar')
 }

@@ -16,81 +16,129 @@
   width: 60px;
 }
 
-.textoSpinner {
-  margin-top: -80px !important;
-  z-index: 5;
-  font-size: x-large;
-  color: white;
-  font-weight: 700;
+.procesar {
+  display: none;
 }
 
-.procesar {
+.ShowContents {
   background-color: rgba(0, 0, 0, 0.671);
-  z-index: 5;
+  z-index: 100;
   width: 100%;
   height: 1000000vh;
   position: fixed;
+  display: block;
 }
 
-.spinner {
-  margin: 100px auto;
+.flower-spinner,  .flower-spinner * {
+  box-sizing: border-box;
+}
+
+.flower-spinner {
+  background-color: rgba(0, 0, 0, 0.671);
+  height: 70px;
+  width: 70px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   margin-top: 18%;
   margin-left: 48%;
-  width: 50px;
-  height: 40px;
-  text-align: center;
-  font-size: 10px;
 }
 
-.spinner > div {
-  background-color: rgb(255, 255, 255);
+.flower-spinner .dots-container {
+  height: calc(70px / 7);
+  width: calc(70px / 7);
+}
+
+.flower-spinner .smaller-dot {
+  background: #1db954;
   height: 100%;
-  width: 6px;
-  display: inline-block;
-  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
-  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  width: 100%;
+  border-radius: 50%;
+  animation: flower-spinner-smaller-dot-animation 2.5s 0s infinite both;
+
 }
 
-.spinner .rect2 {
-  -webkit-animation-delay: -1.1s;
-  animation-delay: -1.1s;
+.flower-spinner .bigger-dot {
+  background: #1db954;
+  height: 100%;
+  width: 100%;
+  padding: 10%;
+  border-radius: 50%;
+  animation: flower-spinner-bigger-dot-animation 2.5s 0s infinite both;
 }
 
-.spinner .rect3 {
-  -webkit-animation-delay: -1s;
-  animation-delay: -1s;
-}
+@keyframes flower-spinner-bigger-dot-animation {
+  0%, 100% {
+    box-shadow: #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px;
+  }
 
-.spinner .rect4 {
-  -webkit-animation-delay: -0.9s;
-  animation-delay: -0.9s;
-}
+  50% {
+    transform: rotate(180deg);
+  }
 
-.spinner .rect5 {
-  -webkit-animation-delay: -0.8s;
-  animation-delay: -0.8s;
-}
+  25%, 75% {
+    box-shadow: #1db954 26px 0px 0px,
+    #1db954 -26px 0px 0px,
+    #1db954 0px 26px 0px,
+    #1db954 0px -26px 0px,
+    #1db954 19px -19px 0px,
+    #1db954 19px 19px 0px,
+    #1db954 -19px -19px 0px,
+    #1db954 -19px 19px 0px;
+  }
 
-@-webkit-keyframes sk-stretchdelay {
-  0%,
-  40%,
   100% {
-    -webkit-transform: scaleY(0.4);
-  }
-  20% {
-    -webkit-transform: scaleY(1);
+    transform: rotate(360deg);
+    box-shadow: #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px;
   }
 }
 
-@keyframes sk-stretchdelay {
-  0%,
-  40%,
-  100% {
-    transform: scaleY(0.4);
-    -webkit-transform: scaleY(0.4);
+@keyframes flower-spinner-smaller-dot-animation {
+  0%, 100% {
+    box-shadow: #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px;
   }
-  20% {
-    transform: scaleY(1);
-    -webkit-transform: scaleY(1);
+
+  25%, 75% {
+    box-shadow: #1db954 14px 0px 0px,
+    #1db954 -14px 0px 0px,
+    #1db954 0px 14px 0px,
+    #1db954 0px -14px 0px,
+    #1db954 10px -10px 0px,
+    #1db954 10px 10px 0px,
+    #1db954 -10px -10px 0px,
+    #1db954 -10px 10px 0px;
+  }
+
+  100% {
+    box-shadow: #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px,
+    #1db954 0px 0px 0px;
   }
 }
